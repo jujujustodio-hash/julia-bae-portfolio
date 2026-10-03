@@ -1,4 +1,20 @@
 (() => {
+  // Keep film previews visible while the original stills are uploaded.
+  const useYouTubeThumbnailIfMissing = (image, id) => {
+    if (!image || !id) return;
+    const fallback = () => {
+      if (image.dataset.thumbnailFallback) return;
+      image.dataset.thumbnailFallback = 'youtube';
+      image.src = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+    };
+    image.addEventListener('error', fallback);
+    if (image.complete && image.naturalWidth === 0) fallback();
+  };
+  useYouTubeThumbnailIfMissing(document.querySelector('.hero-video'), 'MDRBGM2c8nE');
+  document.querySelectorAll('.has-hover-video').forEach(media => {
+    useYouTubeThumbnailIfMissing(media.querySelector('img'), media.querySelector('[data-hover-youtube]')?.dataset.hoverYoutube);
+  });
+
   const header = document.querySelector('.site-header');
   const toggle = document.querySelector('.menu-toggle');
   if (header && toggle) {
@@ -73,3 +89,4 @@
     });
   }, { once: true });
 })();
+
