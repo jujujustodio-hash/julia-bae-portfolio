@@ -1,0 +1,5 @@
+# Original local video exports are retained for editing, but GitHub Pages uses YouTube.
+assets/*.mp4
+
+# Local provenance manifests contain filesystem paths and are not site content.
+*.csv
