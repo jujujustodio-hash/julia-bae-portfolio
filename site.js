@@ -60,6 +60,20 @@
   // Keep visible compound words intact without preventing sentences from wrapping.
   // This runs after deferred project content is rendered on the detail pages.
   document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.design-cover img, .image-button img, .seamless-image img').forEach(image => {
+      const showPending = () => {
+        const holder = image.parentElement;
+        if (holder.classList.contains('asset-pending')) return;
+        holder.classList.add('asset-pending');
+        if (holder.tagName === 'BUTTON') {
+          holder.disabled = true;
+          holder.setAttribute('aria-label', `Image upload pending: ${image.alt}`);
+        }
+      };
+      image.addEventListener('error', showPending);
+      if (image.complete && image.naturalWidth === 0) showPending();
+    });
+
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
       acceptNode(node) {
         if (!node.nodeValue.includes('-') || node.parentElement?.closest('script, style, noscript, template, textarea, .keep-together, [contenteditable]')) {
