@@ -188,12 +188,30 @@
   const next = projects.find(item => item.id === orderedIds[(index + 1) % orderedIds.length]);
   const isBagel = project.id === 'bb-bagel';
   const isVertical = project.ratio === '9:16';
-  const video = project.youtubeId ? `<div class="project-video-block"><div class="project-video-area${isVertical ? ' is-vertical' : ''}"><iframe class="project-video ${isVertical ? 'vertical' : ''}" src="https://www.youtube-nocookie.com/embed/${project.youtubeId}?rel=0&playsinline=1" title="${escape(project.title)} film on YouTube" loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><p class="video-hint">Press play to watch with sound, or <a href="https://www.youtube.com/watch?v=${project.youtubeId}" target="_blank" rel="noopener noreferrer">watch on YouTube ↗</a>.</p></div>` : '';
+  const video = project.youtubeId ? `<div class="project-video-block"><div class="project-video-area${isVertical ? ' is-vertical' : ''}"><button class="youtube-poster" type="button" data-youtube-embed="${project.youtubeId}" aria-label="Play ${escape(project.title)} film"><img src="${A(project.poster)}" alt=""><span class="youtube-play" aria-hidden="true">▶</span></button><iframe class="project-video ${isVertical ? 'vertical' : ''}" title="${escape(project.title)} film on YouTube" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><p class="video-hint">Press play to watch with sound, or <a href="https://www.youtube.com/watch?v=${project.youtubeId}" target="_blank" rel="noopener noreferrer">watch on YouTube ↗</a>.</p></div>` : '';
   const info = `<div class="project-grid"><div class="project-intro-text"><h2>${escape(project.heading)}</h2><p>${escape(project.description)}</p>${project.credit ? `<p class="project-credit">${escape(project.credit)}</p>` : ''}</div><dl class="project-meta"><div><dt>PROJECT TYPE</dt><dd>${escape(project.type)}</dd></div>${project.ratio ? `<div><dt>FORMAT</dt><dd>${escape(project.ratio)}</dd></div>` : ''}<div><dt>MY ROLE</dt><dd>${escape(project.role)}</dd></div><div><dt>TOOLS</dt><dd><ul>${project.tools.map(tool => `<li>${escape(tool)}</li>`).join('')}</ul></dd></div></dl></div>`;
   const bagelConcept = section('Brand concept', 'Warm · Healthy · Comforting. Slogan: One Bite of Comfort.', `<div class="asset-grid">${asset('bb-concept.png', 'BB BAGEL brand concept sheet', 'MiriCanvas', 'full')}</div>`, 'bb-concept-first');
   const heading = `<div class="project-heading"><div class="project-heading-top"><span class="project-counter">PROJECT / ${project.number}</span><span class="project-type">${escape(project.type)}${project.ratio ? ` · ${escape(project.ratio)}` : ''}</span></div><h1>${escape(project.title)}${project.nativeTitle ? `<span class="title-secondary">Original Korean title: ${escape(project.nativeTitle)}</span>` : ''}</h1><p class="project-summary">${escape(project.summary)}</p></div>`;
   const lead = isVertical ? `<div class="project-vertical-layout">${video}<div class="project-vertical-copy">${heading}${info}</div></div>` : `${heading}${project.youtubeId ? video : featuredArtwork(project)}${info}`;
   root.innerHTML = `<div class="project-shell">${lead}${isBagel ? bagelConcept : ''}${extraContent(project)}<nav class="project-nav" aria-label="Project navigation"><a href="project.html?id=${previous.id}">← PREVIOUS<span>${escape(previous.title)}</span></a><a href="index.html#work">ALL WORK ↑</a><a href="project.html?id=${next.id}">NEXT →<span>${escape(next.title)}</span></a></nav></div>`;
+
+  document.querySelectorAll('[data-youtube-embed]').forEach(button => {
+    const poster = button.querySelector('img');
+    const fallback = () => {
+      if (poster.dataset.thumbnailFallback) return;
+      poster.dataset.thumbnailFallback = 'youtube';
+      poster.src = `https://i.ytimg.com/vi/${button.dataset.youtubeEmbed}/hqdefault.jpg`;
+    };
+    poster.addEventListener('error', fallback);
+    if (poster.complete && poster.naturalWidth === 0) fallback();
+    button.addEventListener('click', () => {
+      const frame = button.nextElementSibling;
+      const area = button.parentElement;
+      frame.addEventListener('load', () => area.classList.add('is-playing'), { once: true });
+      frame.src = `https://www.youtube-nocookie.com/embed/${button.dataset.youtubeEmbed}?autoplay=1&rel=0&playsinline=1`;
+      button.disabled = true;
+    });
+  });
 
   const dialog = document.getElementById('image-dialog');
   const image = document.getElementById('lightbox-image');
@@ -217,3 +235,4 @@
   image.addEventListener('click', toggleZoom);
   dialog.addEventListener('close', () => { image.removeAttribute('src'); dialog.classList.remove('zoomed'); });
 })();
+
