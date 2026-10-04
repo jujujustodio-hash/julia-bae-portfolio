@@ -225,7 +225,8 @@ body{word-break:normal;overflow-wrap:normal;hyphens:none}
 }
 
 /* Refine only the homepage header and the marked desktop alignments. */
-.home-page .site-header{background:linear-gradient(rgba(20,34,48,.78),rgba(20,34,48,.78)),url("assets/gwangalli.jpg") center 52% / cover;backdrop-filter:blur(6px)}
+.home-page .site-header{background:#142230;backdrop-filter:none}
+.home-page .hero-motion{object-position:center center}
 .about-tags .keep-together{border:0;border-radius:0;padding:0;font-size:inherit;letter-spacing:inherit;font-weight:inherit}
 @media(min-width:901px){
   .design-intro{grid-template-columns:minmax(0,700px) minmax(250px,1fr);column-gap:clamp(25px,5vw,90px)}
