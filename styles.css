@@ -223,3 +223,11 @@ body{word-break:normal;overflow-wrap:normal;hyphens:none}
 @media(max-width:520px){
   .home-page .hero{padding-top:120px}
 }
+
+/* Refine only the homepage header and the marked desktop alignments. */
+.home-page .site-header{background:linear-gradient(rgba(20,34,48,.78),rgba(20,34,48,.78)),url("assets/gwangalli.jpg") center 52% / cover;backdrop-filter:blur(6px)}
+.about-tags .keep-together{border:0;border-radius:0;padding:0;font-size:inherit;letter-spacing:inherit;font-weight:inherit}
+@media(min-width:901px){
+  .design-intro>p:last-child{transform:translateX(-30px)}
+  .about-section>.eyebrow{transform:translateX(6px)}
+}
