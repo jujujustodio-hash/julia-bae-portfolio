@@ -56,7 +56,7 @@
       role: 'Product Photography, Packaging Design', tools: ['Adobe Illustrator'], extra: 'bobae-packaging'
     },
     {
-      id: 'bobae-posters', number: '08B', title: 'Bobae Trading / Promotional Posters', type: 'Commercial Work',
+      id: 'bobae-posters', number: '08B', title: 'Bobae Trading Promotional Posters', type: 'Commercial Work',
       summary: 'Photography-led promotional designs used for actual company events and products.',
       heading: 'Promotional work for a working business.',
       description: 'I photographed the featured products, retouched the images and designed promotional posters for actual company use. The original Korean copy and layouts remain intact.',
@@ -195,6 +195,8 @@
     ? '<span class="project-title-line">ROUND LAB</span><span class="project-title-line">Korean Skincare Commercial</span>'
     : project.id === 'bobae-packaging'
       ? '<span class="project-title-line">Bobae Trading</span><span class="project-title-line">French Fries Packaging</span>'
+      : project.id === 'bobae-posters'
+      ? 'Bobae Trading<br>Promotional Posters'
       : escape(project.title);
   const heading = `<div class="project-heading"><div class="project-heading-top"><span class="project-counter">PROJECT / ${project.number}</span><span class="project-type">${escape(project.type)}${project.ratio ? ` · ${escape(project.ratio)}` : ''}</span></div><h1>${headingTitle}${project.nativeTitle ? `<span class="title-secondary">Original Korean title: ${escape(project.nativeTitle)}</span>` : ''}</h1><p class="project-summary">${escape(project.summary)}</p></div>`;
   const lead = isVertical ? `<div class="project-vertical-layout">${video}<div class="project-vertical-copy">${heading}${info}</div></div>` : `${heading}${project.youtubeId ? video : featuredArtwork(project)}${info}`;
